@@ -1,5 +1,4 @@
 {
-  "homepage": "https://github.com/lohith114/trail_frontend",
   "name": "edu-track",
   "version": "0.1.0",
   "private": true,
@@ -42,19 +41,14 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "dotenv": "^16.4.7",
     "gh-pages": "^6.2.0"
   },
   "scripts": {
-  "predeploy": "npm run build",
-  "deploy": "gh-pages -d build",
-  "prebuild": "dotenv -e .env react-scripts build",
-  "start": "react-scripts start",
-  "build": "react-scripts build",
-   "test": "react-scripts test",
-   "eject": "react-scripts eject"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
-
   "eslintConfig": {
     "extends": [
       "react-app",
