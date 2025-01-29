@@ -23,6 +23,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import RegistrationForm from './Pages/RegistrationForm';
 import Footer from './Components/Footer'; // Ensure correct import path
 import { auth } from './Firebase/Firebase'; // Adjust the path if necessary
+import NoticeDashboard from './Pages/NoticeDashboard';
+import PostForm from './Pages/PostForm';
+import PostList from './Pages/PostList';
 
 const theme = createTheme({
   palette: {
@@ -40,17 +43,17 @@ const theme = createTheme({
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(null); // null represents the loading state
-  const [sidebarWidth, setSidebarWidth] = useState(60); // Default width for sidebar
+  const [sidebarWidth, setSidebarWidth] = useState(60);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      setIsAuthenticated(!!user); // Set authentication status
+      setIsAuthenticated(!!user);
     });
     return () => unsubscribe();
   }, []);
 
   const handleSidebarToggle = (isExpanded) => {
-    setSidebarWidth(isExpanded ? 240 : 60); // Update sidebar width based on toggle
+    setSidebarWidth(isExpanded ? 240 : 60);
   };
 
   const PrivateRoute = ({ children }) => {
@@ -59,7 +62,7 @@ function App() {
       return <div>Loading...</div>;
     }
 
-    return isAuthenticated ? children : <Navigate to="/Edu-Track" />; // Protect routes
+    return isAuthenticated ? children : <Navigate to="/Edu-Track" />;
   };
 
   return (
@@ -67,7 +70,6 @@ function App() {
       <CssBaseline />
       <Router>
         <Box display="flex" flexDirection="row" sx={{ height: '100vh', width: '100%' }}>
-          {/* Sidebar */}
           {isAuthenticated && (
             <Box
               width={sidebarWidth}
@@ -80,7 +82,6 @@ function App() {
             </Box>
           )}
 
-          {/* Main content */}
           <Box
             sx={{
               ml: `${sidebarWidth}px`,
@@ -113,6 +114,9 @@ function App() {
               <Route path="/generator" element={<PrivateRoute><TimetableGenerator /></PrivateRoute>} />
               <Route path="/upload" element={<PrivateRoute><TimetableUpload /></PrivateRoute>} />
               <Route path="/view" element={<PrivateRoute><TimeTableView /></PrivateRoute>} />
+              <Route path="/Notice-Dashboard" element={<PrivateRoute><NoticeDashboard /></PrivateRoute>} />
+              <Route path="/add-notice" element={<PrivateRoute><PostForm /></PrivateRoute>} />
+              <Route path="/manage-notices" element={<PrivateRoute><PostList /></PrivateRoute>} />
               {/* Catch-all route for any undefined route */}
               <Route path="*" element={<Navigate to="/Edu-Track" />} />
             </Routes>
