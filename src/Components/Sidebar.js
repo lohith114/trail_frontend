@@ -21,10 +21,12 @@ import {
     EventNote,
     AddCircle,
     People,
-    Assessment,  
+    Assessment,
+    NotificationsActive,  
 } from '@mui/icons-material';
 
 const Sidebar = ({ children }) => {
+    const [isCollapsed, setIsCollapsed] = useState(true);
     const [isHovered, setIsHovered] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const navigate = useNavigate();
@@ -44,7 +46,10 @@ const Sidebar = ({ children }) => {
     if (!isAuthenticated) {
         return null;
     }
-    
+
+    const toggleSidebar = () => {
+        setIsCollapsed(!isCollapsed);
+    };
 
     const menuItems = [
         { text: 'Home', icon: <Home sx={{ marginTop: '-2px' }} />, path: '/welcome' },
@@ -55,6 +60,7 @@ const Sidebar = ({ children }) => {
         { text: 'Attendance', icon: <CheckCircle />, path: '/attendance' },
         { text: 'Marks Management', icon: <Assessment />, path: '/Marks-Management' },
         { text: 'Exam Dashboard', icon: <EventNote />, path: '/Exam-Dashboard' },
+        { text: 'Notice Dashboard', icon: <NotificationsActive />, path: '/Notice-Dashboard' },
         { text: 'Know us Better', icon: <HelpCenter />, path: '/school-info' },
     ];
 
@@ -65,12 +71,14 @@ const Sidebar = ({ children }) => {
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
                 sx={{
-                    width: isHovered ? 250 : 70,
+                    width: isCollapsed && !isHovered ? 70 : 250,
                     flexShrink: 0,
                     '& .MuiDrawer-paper': {
-                        width: isHovered ? 250 : 70,
+                        width: isCollapsed && !isHovered ? 70 : 250,
                         boxSizing: 'border-box',
-                        background: 'linear-gradient(145deg, rgba(62, 0, 47, 0.8), rgba(62, 0, 47, 0.9))',
+                        background: isHovered
+                            ? 'linear-gradient(145deg, rgba(62, 0, 47, 0.8), rgba(62, 0, 47, 0.9))'
+                            : 'linear-gradient(145deg, rgba(62, 0, 47, 0.8), rgba(62, 0, 47, 0.9))',
                         backdropFilter: 'blur(1px)',
                         border: 'none',
                         boxShadow: 'none',
@@ -104,59 +112,60 @@ const Sidebar = ({ children }) => {
                 </Box>
 
                 {/* Navigation Menu */}
-                <List sx={{ marginTop: '15px' }}>
-                    {menuItems.map((item) => (
-                        <ListItem
-                            button
-                            key={item.text}
-                            component={NavLink}
-                            to={item.path}
-                            sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                margin: '5px 10px',
-                                padding: '10px',
-                                color: '#FFFFFF',
-                                textDecoration: 'none',
-                                borderRadius: '10px',
-                                transition: 'background-color 0.3s ease, transform 0.2s ease',
-                                '&:hover': {
-                                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                                    transform: 'scale(1.05)',
-                                },
-                                '&.active': {
-                                    backgroundColor: 'rgba(255, 255, 255, 0.3)',
-                                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-                                },
-                            }}
-                        >
-                            <ListItemIcon
-                                sx={{
-                                    color: 'inherit',
-                                    justifyContent: 'center',
-                                    minWidth: 'auto',
-                                }}
-                            >
-                                {item.icon}
-                            </ListItemIcon>
-                            <ListItemText
-                                primary={item.text}
-                                sx={{
-                                    color: 'inherit',
-                                    fontWeight: 500,
-                                    display: isHovered ? 'block' : 'none',
-                                    whiteSpace: 'nowrap',
-                                }}
-                            />
-                        </ListItem>
-                    ))}
-                </List>
+                <List sx={{ marginTop: '15px' }}> {/* Adds margin to the entire list */}
+    {menuItems.map((item) => (
+        <ListItem
+            button
+            key={item.text}
+            component={NavLink}
+            to={item.path}
+            sx={{
+                display: 'flex',
+                alignItems: 'center',
+                margin: '5px 10px',
+                padding: '10px',
+                color: '#FFFFFF', // Icons
+                textDecoration: 'none',
+                borderRadius: '10px',
+                transition: 'background-color 0.3s ease, transform 0.2s ease',
+                '&:hover': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    transform: 'scale(1.05)',
+                },
+                '&.active': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                },
+            }}
+        >
+            <ListItemIcon
+                sx={{
+                    color: 'inherit',
+                    justifyContent: 'center',
+                    minWidth: 'auto',
+                }}
+            >
+                {item.icon}
+            </ListItemIcon>
+            <ListItemText
+                primary={item.text}
+                sx={{
+                    color: 'inherit',
+                    fontWeight: 500,
+                    display: isCollapsed && !isHovered ? 'none' : 'block',
+                    whiteSpace: 'nowrap',
+                }}
+            />
+        </ListItem>
+    ))}
+</List>
+
             </Drawer>
 
             <Box
                 sx={{
                     flexGrow: 1,
-                    marginLeft: isHovered ? '250px' : '70px',
+                    marginLeft: isCollapsed && !isHovered ? '70px' : '250px',
                     padding: 2,
                     transition: 'margin-left 0.3s ease',
                 }}
