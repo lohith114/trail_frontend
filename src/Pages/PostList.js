@@ -44,6 +44,7 @@ const PostList = () => {
   const [deleteAllDialogOpen, setDeleteAllDialogOpen] = useState(false);
   const [postToDelete, setPostToDelete] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const fetchPosts = async () => {
